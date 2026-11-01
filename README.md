@@ -1,3 +1,3 @@
-# README - Astroids
+# README - Asteroids
 
-Astroids clone made with `pygame`.
+Asteroids clone made with `pygame`.
