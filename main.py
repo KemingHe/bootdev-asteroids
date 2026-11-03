@@ -14,9 +14,16 @@ def main():
     screen: pygame.Surface = pygame.display.set_mode(
         (SCREEN_WIDTH, SCREEN_HEIGHT),
     )
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    # Group game objs to manage them centrally
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Init player
+
     clock = pygame.time.Clock()  # Decouple game speed from hardware speed
-    dt: float = 0.0  
+    dt: float = 0.0
 
     while True:
         # Step 0. Write logs
@@ -28,12 +35,13 @@ def main():
                 return
 
         # Step 2. Update game state
-        player.update(dt)
+        updatable.update(dt)
 
         # Step 3. Render to screen
         screen.fill(BACKGROUND_COLOR)
-        player.draw(screen)
-        pygame.display.flip()  # Refresh screen
+        for memb in drawable:
+            memb.draw(screen)
+        pygame.display.flip()  # Refresh screen last
 
         # Step 4. Tick the clock to stablize FPS
         dt = clock.tick(MAX_FPS) / 1000  # ms -> s
