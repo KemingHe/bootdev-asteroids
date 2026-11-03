@@ -11,3 +11,6 @@ wheels/
 
 # Linter and formatter
 .ruff_cache/
+
+# Logging
+game_state.jsonl
