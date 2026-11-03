@@ -28,7 +28,7 @@ def main():
                 return
 
         # Step 2. Update game state
-        # TODO
+        player.update(dt)
 
         # Step 3. Render to screen
         screen.fill(BACKGROUND_COLOR)
@@ -37,7 +37,7 @@ def main():
 
         # Step 4. Tick the clock to stablize FPS
         dt = clock.tick(MAX_FPS) / 1000  # ms -> s
-        print(f"delta time={dt}s")
+        
 
 
 if __name__ == "__main__":
