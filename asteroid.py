@@ -10,7 +10,6 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
 
     def draw(self, screen: pygame.Surface) -> None:
-        """Draws the player as a triangle on screen"""
         pygame.draw.circle(
             screen,
             ASTEROID_COLOR,
