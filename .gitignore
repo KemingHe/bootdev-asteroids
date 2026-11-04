@@ -13,4 +13,5 @@ wheels/
 .ruff_cache/
 
 # Logging
+game_events.jsonl
 game_state.jsonl

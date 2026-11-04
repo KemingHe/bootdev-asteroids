@@ -1,9 +1,11 @@
+import sys
+
 import pygame
 
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from constants import BACKGROUND_COLOR, MAX_FPS, SCREEN_HEIGHT, SCREEN_WIDTH
-from logger import log_state
+from logger import log_event, log_state
 from player import Player
 
 
@@ -27,7 +29,7 @@ def main():
     AsteroidField()
 
     Player.containers = (updatable, drawable)
-    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Init player
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Init player
 
     clock = pygame.time.Clock()  # Decouple game speed from hardware speed
     dt: float = 0.0
@@ -43,6 +45,11 @@ def main():
 
         # Step 2. Update game state
         updatable.update(dt)
+        for memb in asteroids:
+            if player.collides_with(memb):
+                log_event("player_hit")
+                print("Game over!")
+                sys.exit()
 
         # Step 3. Render to screen
         screen.fill(BACKGROUND_COLOR)
