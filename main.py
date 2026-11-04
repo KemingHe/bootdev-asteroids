@@ -1,5 +1,7 @@
 import pygame
 
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 from constants import BACKGROUND_COLOR, MAX_FPS, SCREEN_HEIGHT, SCREEN_WIDTH
 from logger import log_state
 from player import Player
@@ -16,8 +18,13 @@ def main():
     )
 
     # Group game objs to manage them centrally
+    asteroids = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+    AsteroidField()
 
     Player.containers = (updatable, drawable)
     Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Init player
@@ -46,7 +53,6 @@ def main():
         # Step 4. Tick the clock to stablize FPS
         dt = clock.tick(MAX_FPS) / 1000  # ms -> s
         
-
 
 if __name__ == "__main__":
     main()
