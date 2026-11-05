@@ -57,7 +57,7 @@ def main():
                 if shot.collides_with(asteroid):
                     log_event("asteroid_shot")
                     shot.kill()
-                    asteroid.kill()  # No L/M/S distinction for now
+                    asteroid.split()
 
             # Detect player hit -> end game
             if player.collides_with(asteroid):
