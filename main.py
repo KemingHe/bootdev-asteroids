@@ -49,8 +49,18 @@ def main():
 
         # Step 2. Update game state
         updatable.update(dt)
-        for memb in asteroids:
-            if player.collides_with(memb):
+
+        for asteroid in asteroids:
+            # Detect shot hit -> L/M breaks down, S disappears
+            # Check before player collision for better UX
+            for shot in shots:
+                if shot.collides_with(asteroid):
+                    log_event("asteroid_shot")
+                    shot.kill()
+                    asteroid.kill()  # No L/M/S distinction for now
+
+            # Detect player hit -> end game
+            if player.collides_with(asteroid):
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
