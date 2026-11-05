@@ -5,6 +5,7 @@ from constants import (
     LINE_WIDTH,
     PLAYER_COLOR,
     PLAYER_RADIUS,
+    PLAYER_SHOOT_COOLDOWN_SECONDS,
     PLAYER_SHOT_SPEED,
     PLAYER_SPEED,
     PLAYER_TURN_SPEED,
@@ -18,6 +19,7 @@ class Player(CircleShape):
     def __init__(self, x: float, y: float) -> None:
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation: float = 180  # Init pointing upwards
+        self.shoot_cooldown_timer: float = 0
 
     def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.polygon(
@@ -38,12 +40,18 @@ class Player(CircleShape):
 
     def __shoot(self) -> None:
         """Spwans a shot object at player loc, in the same dir"""
+        if self.shoot_cooldown_timer > 0:
+            return
+        self.shoot_cooldown_timer = PLAYER_SHOOT_COOLDOWN_SECONDS
         x, y = self.position
         new_shot = Shot(x, y)
         new_shot.velocity = pygame.Vector2(0, 1) * PLAYER_SHOT_SPEED
         new_shot.velocity = new_shot.velocity.rotate(self.rotation)
         
     def update(self, dt: float) -> None:
+        
+        self.shoot_cooldown_timer -= dt
+
         keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
 
         # Movement (WASD and arrow keys)
@@ -59,3 +67,4 @@ class Player(CircleShape):
         # Shooting (z (STG-style) and space keys)
         if keys[pygame.K_z] or keys[pygame.K_SPACE]:
             self.__shoot()
+
